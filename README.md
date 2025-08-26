@@ -1,8 +1,6 @@
-# Tk Data Preparer - MVP
+# Tk Data Preparer
 
 **Tk Data Preparer** is a simple Python Tkinter GUI tool to clean, preprocess, and export Excel (`.xls`, `.xlsx`), CSV, and TXT files to a formatted TXT file.
-
-This is the **Day 1 MVP** version: basic GUI with file selection, column listing, and minimal data cleaning.
 
 ---
 
