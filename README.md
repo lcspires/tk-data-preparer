@@ -11,6 +11,7 @@
 - Filter rows based on a minimum character length in the first column.
 - Remove duplicates based on the first column.
 - Export cleaned data to a semicolon-delimited TXT file.
+- Tooltips provide guidance on buttons and inputs in the interface.
 
 ---
 
