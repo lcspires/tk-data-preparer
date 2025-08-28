@@ -9,33 +9,36 @@ from tk_data_preparer.logic import (
 
 @pytest.fixture
 def sample_df():
-    data = {
+    return pd.DataFrame({
         "Name": ["Lucas", "Raquel", "Gabriel", "Beatriz", "Levi"],
         "Code": ["123", "45", "6789", "45", "12"],
         "Value": [100, 200, 300, 200, 400],
-    }
-    return pd.DataFrame(data)
+    })
 
 
 def test_limpar_espacos_em_colunas(sample_df):
-    # adicionando espaços artificiais para validar
-    sample_df["Name"] = [" Lucas ", " Raquel ", " Gabriel ", " Beatriz ", " Levi "]
-    df_clean = limpar_espacos_em_colunas(sample_df.copy())
-    assert all(df_clean["Name"].str.strip() == df_clean["Name"])
+    df_dirty = sample_df.copy()
+    df_dirty.loc[1, "Name"] = " Raquel "
+    df_dirty.loc[2, "Name"] = " Gabriel"
+    df_clean, total_espacos = limpar_espacos_em_colunas(df_dirty)
+    assert df_clean["Name"].iloc[1] == "Raquel"
+    assert df_clean["Name"].iloc[2] == "Gabriel"
+    assert total_espacos == 3  # três espaços removidos no total
 
 
 def test_remover_duplicatas(sample_df):
-    df_unique = remover_duplicatas(sample_df.copy(), "Code")
-    # deve remover uma das linhas "45"
-    assert df_unique.shape[0] == 4
-    assert df_unique["Code"].duplicated().sum() == 0
+    df_dup = sample_df.copy()
+    df_dup.loc[5] = ["Lucas", "123", 100]  # adicionar duplicata
+    df_unique, removidas = remover_duplicatas(df_dup, "Code")
+    assert df_unique.shape[0] == df_dup.shape[0] - removidas
+    assert removidas == 2  # "123" e "45" duplicadas removidas
 
 
 def test_filtrar_primeira_coluna_por_tamanho(sample_df):
-    df_filtered, rows_removed = filtrar_primeira_coluna_por_tamanho(
+    df_filtrado, removidas = filtrar_primeira_coluna_por_tamanho(
         sample_df.copy(), "Code", min_len=3
     )
-    # Apenas "123" (len=3) e "6789" (len=4) permanecem
-    assert df_filtered.shape[0] == 2
-    assert all(df_filtered["Code"].str.len() >= 3)
-    assert rows_removed == 3
+    # "45" aparece duas vezes e "12" uma vez → total 3 linhas removidas
+    assert removidas == 3
+    assert df_filtrado.shape[0] == 2
+    assert all(df_filtrado["Code"].str.len() >= 3)
