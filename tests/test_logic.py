@@ -23,7 +23,7 @@ def test_limpar_espacos_em_colunas(sample_df):
     df_clean, total_espacos = limpar_espacos_em_colunas(df_dirty)
     assert df_clean["Name"].iloc[1] == "Raquel"
     assert df_clean["Name"].iloc[2] == "Gabriel"
-    assert total_espacos == 3  # três espaços removidos no total
+    assert total_espacos == 3  # 2 espaços em " Raquel " + 1 em " Gabriel"
 
 
 def test_remover_duplicatas(sample_df):
@@ -34,11 +34,15 @@ def test_remover_duplicatas(sample_df):
     assert removidas == 2  # "123" e "45" duplicadas removidas
 
 
-def test_filtrar_primeira_coluna_por_tamanho(sample_df):
+@pytest.mark.parametrize("min_len,expected_removed,expected_remaining", [
+    (3, 3, 2),  # remove "45"(2x) + "12"(1x)
+    (4, 4, 1),  # remove tudo menos "6789"
+    (1, 0, 5),  # ninguém removido
+])
+def test_filtrar_primeira_coluna_por_tamanho(sample_df, min_len, expected_removed, expected_remaining):
     df_filtrado, removidas = filtrar_primeira_coluna_por_tamanho(
-        sample_df.copy(), "Code", min_len=3
+        sample_df.copy(), "Code", min_len=min_len
     )
-    # "45" aparece duas vezes e "12" uma vez → total 3 linhas removidas
-    assert removidas == 3
-    assert df_filtrado.shape[0] == 2
-    assert all(df_filtrado["Code"].str.len() >= 3)
+    assert removidas == expected_removed
+    assert df_filtrado.shape[0] == expected_remaining
+    assert all(df_filtrado["Code"].str.len() >= min_len)
