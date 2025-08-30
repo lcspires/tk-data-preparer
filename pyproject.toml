@@ -20,8 +20,7 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/YOUR_USERNAME/tk-data-preparer"
-"Repository" = "https://github.com/YOUR_USERNAME/tk-data-preparer"
+"Repository" = "https://github.com/lcspires/tk-data-preparer.git"
 
 [tool.setuptools.packages.find]
 where = ["tk-data-preparer"]
