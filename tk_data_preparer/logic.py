@@ -1,45 +1,49 @@
 """
-tk_data_preparer.logic
+Logic functions for data preparation in the tk_data_preparer app.
 
-Funções de limpeza, filtragem e manipulação de dados para o Tk Data Preparer.
+Includes:
+- Removing extra spaces from all string columns.
+- Filtering rows based on minimum character length in the first column.
+- Removing duplicates based on the first column.
 """
 
 import pandas as pd
 
-def limpar_espacos_em_colunas(df: pd.DataFrame, colunas=None):
-    """
-    Remove espaços extras nas colunas especificadas ou em todas, se None.
-    Retorna o DataFrame modificado e o total de espaços removidos.
-    """
-    if colunas is None:
-        colunas = df.columns.tolist()
 
-    total_espacos = 0
+def limpar_espacos_em_colunas(df: pd.DataFrame, colunas: list):
+    """
+    Removes extra spaces in the specified columns of the DataFrame.
+    Returns the cleaned DataFrame and the total number of spaces removed.
+    """
+    total_espacos_removidos = 0
     for col in colunas:
-        if df[col].dtype == object:
-            antes = df[col].astype(str).apply(len).sum()
-            df[col] = df[col].astype(str).str.strip()
-            depois = df[col].astype(str).apply(len).sum()
-            total_espacos += max(0, antes - depois)
-    return df, total_espacos
+        if df[col].dtype == object:  # Process only string columns
+            original = df[col].astype(str)
+            limpo = original.str.strip().str.replace(r"\s+", " ", regex=True)
+            espacos_removidos = (original.str.len() - limpo.str.len()).sum()
+            total_espacos_removidos += espacos_removidos
+            df[col] = limpo
+    return df, total_espacos_removidos
 
 
-def remover_duplicatas(df: pd.DataFrame, coluna: str):
+def filtrar_primeira_coluna_por_tamanho(df: pd.DataFrame, primeira_coluna: str, min_len: int = 6):
     """
-    Remove duplicatas com base em uma coluna específica.
-    Retorna o DataFrame sem duplicatas e o total de linhas removidas.
+    Removes rows where the first column has fewer characters than min_len.
+    Returns the filtered DataFrame and the number of rows removed.
     """
-    total_antes = df.shape[0]
-    df = df.drop_duplicates(subset=[coluna], keep='first')
-    total_removido = total_antes - df.shape[0]
-    return df.copy(), total_removido
+    tamanho_anterior = len(df)
+    df = df[df[primeira_coluna].astype(str).str.len() >= min_len]
+    linhas_removidas = tamanho_anterior - len(df)
+    return df, linhas_removidas
 
 
-def filtrar_primeira_coluna_por_tamanho(df: pd.DataFrame, coluna: str, min_len=1):
+def remover_duplicatas(df: pd.DataFrame, primeira_coluna: str):
     """
-    Remove linhas em que o comprimento do valor na coluna especificada é menor que min_len.
-    Retorna o DataFrame filtrado e o número de linhas removidas.
+    Removes duplicate rows based on the first column.
+    Keeps the first occurrence and discards the others.
+    Returns the DataFrame and the number of duplicates removed.
     """
-    condicao = df[coluna].astype(str).str.len() >= min_len
-    removidas = (~condicao).sum()
-    return df[condicao].copy(), removidas
+    tamanho_anterior = len(df)
+    df = df.drop_duplicates(subset=[primeira_coluna], keep="first")
+    duplicatas_removidas = tamanho_anterior - len(df)
+    return df, duplicatas_removidas
