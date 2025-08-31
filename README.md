@@ -90,13 +90,30 @@ python -m pytest -q
 
 ```bash
 tk-data-preparer/
-├── tk_data_preparer/         # Package source
+├── tk_data_preparer/
 │   ├── __init__.py
-│   ├── app.py                # GUI entrypoint
-│   ├── logic.py              # Data-cleaning functions
-│   └── tooltip.py            # Tooltip helper
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── tooltip.py
+│   │   └── widgets/
+│   │       └── __init__.py
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── cleaning.py # OK
+│   │   ├── filtering.py # OK
+│   │   ├── deduplication.py # OK
+│   │   └── pipeline.py # OK
+│   ├── utils/
+│   │   └── __init__.py
+│   └── config.py
 ├── tests/
-│   └── test_logic.py
+│   ├── __init__.py
+│   ├── test_cleaning.py
+│   ├── test_filtering.py
+│   ├── test_deduplication.py
+│   ├── test_pipeline.py
+│   └── test_gui.py
 ├── requirements.txt
 ├── README.md
 ├── LICENSE
