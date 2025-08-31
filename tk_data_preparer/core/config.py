@@ -1,4 +1,3 @@
-# tk_data_preparer/config.py
 """
 Sistema de configuração para o pipeline de preparação de dados.
 
@@ -10,10 +9,10 @@ from typing import Dict, Any, Optional
 import json
 from pathlib import Path
 
-from .core.cleaning import CleanConfig
-from .core.filtering import FilterConfig
-from .core.deduplication import DedupConfig
-from .core.pipeline import PipelineConfig
+from .cleaning import CleanConfig
+from .filtering import FilterConfig
+from .deduplication import DedupConfig
+from .pipeline import PipelineConfig
 
 
 @dataclass

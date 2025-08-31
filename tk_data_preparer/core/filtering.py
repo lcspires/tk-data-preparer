@@ -15,7 +15,7 @@ class FilterConfig:
 def filter_by_length(
     df: pd.DataFrame,
     column: str,
-    config: FilterConfig
+    config: FilterConfig  # ← Aqui está correto, usa a classe já definida
 ) -> tuple[pd.DataFrame, Dict[str, Any]]:
     """
     Remove linhas cuja string na coluna especificada não atinge o comprimento mínimo.

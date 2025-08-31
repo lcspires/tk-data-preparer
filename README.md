@@ -4,7 +4,8 @@
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 ![Pytest](https://img.shields.io/badge/tests-passing-brightgreen)
 
-**Tk Data Preparer** is a Python Tkinter GUI tool designed to clean, preprocess, and export Excel (`.xls`, `.xlsx`), CSV, and TXT files to a formatted TXT file. It’s perfect for data analysts, developers, and professionals who need quick and reliable data preparation.
+**Tk Data Preparer** is a Python Tkinter GUI tool to clean, preprocess, and export tabular data (`Excel`, `CSV`, `TXT`).
+It provides a configurable data preparation pipeline (cleaning → filtering → deduplication) with presets for common use cases.
 
 ---
 
@@ -100,10 +101,10 @@ tk-data-preparer/
 │   │       └── __init__.py
 │   ├── core/
 │   │   ├── __init__.py
-│   │   ├── cleaning.py # OK
-│   │   ├── filtering.py # OK
-│   │   ├── deduplication.py # OK
-│   │   └── pipeline.py # OK
+│   │   ├── cleaning.py
+│   │   ├── filtering.py
+│   │   ├── deduplication.py
+│   │   └── pipeline.py
 │   ├── utils/
 │   │   └── __init__.py
 │   └── config.py
