@@ -1,0 +1,34 @@
+repos:
+  # Black - formata o código automaticamente, mantendo consistência de estilo
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+
+  # Isort - organiza importações, separa first-party e third-party
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1
+    hooks:
+      - id: isort
+
+  # Ruff - linter rigoroso com auto-fix, verifica erros de sintaxe, estilo e boas práticas
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.12.12
+    hooks:
+      - id: ruff
+
+  # Mypy - checagem de tipos estática, garante type hints coerentes
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.17.1
+    hooks:
+      - id: mypy
+
+  # Pytest - executa todos os testes unitários, falha bloqueia o commit
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run Pytest
+        entry: poetry run pytest
+        language: system
+        types: [python]
+        pass_filenames: false
