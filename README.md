@@ -77,6 +77,4 @@ Distributed under the MIT License. See [LICENSE](LICENSE) file for more informat
 
 ## Author
 
-[Linkedin: Lucas Ferreira](https://www.l.com/in/lucasopf/)
-
-Aspiring Software Developer building skills in end-to-end data automation and creating intuitive applications.
+[Lucas Ferreira](https://www.linkedin.com/in/lucasopf/)
